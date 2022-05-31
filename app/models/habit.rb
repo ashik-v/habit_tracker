@@ -1,11 +1,3 @@
-class DateValidator < ActiveModel::EachValidator
-  def validate_each(record, attribute, value)
-    unless value.is_a?(Date)
-      record.errors.add attribute, (options[:message] || "is not a date")
-    end
-  end
-end
-
 class Habit < ApplicationRecord
   serialize :tracked_dates, Array
   validate :tracked_dates_type
