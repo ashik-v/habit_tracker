@@ -1,6 +1,7 @@
 class Habit < ApplicationRecord
   serialize :tracked_dates, Array
   validate :tracked_dates_type, :tracked_dates_uniqueness
+  validate :name, presence: true
 
   def tracked_dates_type
     invalid_dates = []
