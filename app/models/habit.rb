@@ -3,6 +3,8 @@ class Habit < ApplicationRecord
   validate :tracked_dates_type, :tracked_dates_uniqueness
   validate :name, presence: true
 
+  self.ignored_columns = ["start_date"]
+
   def tracked_dates_type
     invalid_dates = []
     tracked_dates.each do |tracked_date|
