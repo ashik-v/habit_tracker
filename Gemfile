@@ -15,6 +15,8 @@ gem "puma", "~> 5.0"
 # Graphql
 gem "graphql"
 
+gem "strong_migrations"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 

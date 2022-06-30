@@ -195,6 +195,8 @@ GEM
     reline (0.3.1)
       io-console (~> 0.5)
     sqlite3 (1.4.2)
+    strong_migrations (1.2.0)
+      activerecord (>= 5.2)
     strscan (3.0.3)
     thor (1.2.1)
     timeout (0.2.0)
@@ -221,6 +223,7 @@ DEPENDENCIES
   rspec-rails!
   rspec-support!
   sqlite3 (~> 1.4)
+  strong_migrations
   tzinfo-data
 
 RUBY VERSION
