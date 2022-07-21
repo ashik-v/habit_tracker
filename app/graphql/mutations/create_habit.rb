@@ -2,15 +2,12 @@ module Mutations
   class CreateHabit < Mutations::BaseMutation
     # arguments (similar to Rails strong parameters)
     argument :name, String, required: true
-    argument :tracked_dates, [GraphQL::Types::ISO8601Date], required: true
+    argument :tracked_dates, [GraphQL::Types::ISO8601Date]
 
-    # fields
-    # field :habit, Types::HabitType
-    field :name, String
+    field :habit, Types::HabitType
 
-    # resolve
-    def resolve(*args)
-      Habit.create(args)
+    def resolve(args)
+      { habit: Habit.create(args) }
     end
   end
 end
