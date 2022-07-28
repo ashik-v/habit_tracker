@@ -4,8 +4,8 @@ RSpec.describe Mutations::CreateHabit, type: :request do
   it "creates a habit" do
     create_habit
     habit = Habit.last
-
     parsed_habit_name = JSON.parse(response.body)["data"]["createHabit"]["habit"]["name"]
+
     expect(response).to be_successful
     expect(parsed_habit_name).to eq("Brush teeth")
     expect(habit).to have_attributes(
@@ -34,6 +34,6 @@ RSpec.describe Mutations::CreateHabit, type: :request do
       }
     GRAPHQL
 
-    post "/graphql", params: { "query" => "#{mutation}" }
+    post "/graphql", params: { query: mutation }
   end
 end
