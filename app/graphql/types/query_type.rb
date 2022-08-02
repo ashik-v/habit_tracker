@@ -13,11 +13,12 @@ module Types
     end
 
     field :habit, HabitType, "gets a specific habit" do
-      argument :name, String
+      argument :name, String, required: false
+      argument :id, ID, required: false
     end
 
-    def habit(name:)
-      Habit.find_by(name: name)
+    def habit(args)
+      Habit.find_by(args)
     end
   end
 end
