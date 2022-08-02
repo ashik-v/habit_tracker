@@ -38,7 +38,7 @@ RSpec.describe Types::QueryType, type: :request do
       post "/graphql", params: { query: habits_query }
 
       result = JSON.parse(response.body)
-      expected_result = { "data" => { "habits" => { "name" => habit.name, "trackedDates" => habit.tracked_dates } } }
+      expected_result = { "data" => { "habit" => { "name" => habit.name, "trackedDates" => habit.tracked_dates } } }
       expect(result).to eq(expected_result)
       expect(response).to be_successful
     end
