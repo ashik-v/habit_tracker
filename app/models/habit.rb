@@ -2,6 +2,12 @@ class Habit < ApplicationRecord
   serialize :tracked_dates, Array
   validate :tracked_dates_type, :tracked_dates_uniqueness
   validates :name, presence: true
+  scope :by_date, ->(date) { Habit.all.select{ |habit| habit.tracked_dates.include?(date) } }
+
+  ## This implements the scope as a class method; commented for posterity
+  # def self.by_date(date)
+  #   Habit.where('tracked_dates LIKE ?', "%#{date.to_s}%")
+  # end
 
   def tracked_dates_type
     invalid_dates = []

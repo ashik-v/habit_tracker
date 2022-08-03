@@ -1,6 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe Habit, type: :model do
+  it "scopes by date" do
+    habit = Habit.create(name: "habit", tracked_dates: [Date.today])
+    another_habit = Habit.create(name: "another habit", tracked_dates: [Date.yesterday, Date.today])
+    Habit.create(name: "irrelevant habit", tracked_dates: [])
+
+    result = Habit.by_date(Date.today)
+
+    expect(result).to contain_exactly(habit, another_habit)
+  end
+
   it "accepts date values for tracked dates" do
     habit = Habit.new(name: "new habit", tracked_dates: [Date.today])
 
