@@ -4,10 +4,8 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
-
     field :habits, [HabitType], "get all habits"
+
     def habits
       Habit.all
     end
@@ -19,6 +17,14 @@ module Types
 
     def habit(args)
       Habit.find_by(args)
+    end
+
+    field :habits_by_date, [HabitType], "get habits by a tracked date" do
+      argument :tracked_date, GraphQL::Types::ISO8601Date, required: false
+    end
+
+    def habits_by_date(tracked_date:)
+      Habit.by_date(tracked_date)
     end
   end
 end

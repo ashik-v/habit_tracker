@@ -62,4 +62,24 @@ RSpec.describe Types::QueryType, type: :request do
       expect(response).to be_successful
     end
   end
+
+  it "queries habits by a tracked date" do
+    habit = Habit.create(name: "sleep on time", tracked_dates: [Date.parse("2022-07-26"), Date.parse("2022-07-27")])
+    Habit.create(name: "brush teeth", tracked_dates: [])
+
+    habits_query = <<~GRAPHQL
+      query {
+        habitsByDate(trackedDate: "2022-07-26") {
+          name
+          trackedDates
+        }
+      }
+    GRAPHQL
+    post "/graphql", params: { query: habits_query }
+
+    result = JSON.parse(response.body)
+    expected_result = { "data" => { "habitsByDate" => [ { "name" => habit.name, "trackedDates" => habit.tracked_dates.map(&:to_s) } ] } }
+    expect(result).to eq(expected_result)
+    expect(response).to be_successful
+  end
 end
