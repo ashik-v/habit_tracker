@@ -2,23 +2,23 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react'
 
 function HabitLabel({ name }) {
-  return <>{name}</>
+  return <div>{name}</div>
 }
 
 export default function Home() {
-    const [habit, setHabit] = useState('loading...')
+    const [habits, setHabits] = useState([{ name: 'loading...' }])
     useEffect(() => {
         const query = { query: `{ habits { name } }` }
         fetch(
-            "http://localhost:3001/graphql",
+            "http://localhost:3002/graphql",
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(query),
             })
             .then(response => response.json())
-            .then(response => setHabit(
-                response.data.habits[0].name
+            .then(response => setHabits(
+                response.data.habits
             ))
     }, [])
 
@@ -29,7 +29,12 @@ export default function Home() {
           Welcome to Habit Tracker!
         </h1>
         <div>
-          <HabitLabel name={habit}></HabitLabel>
+          {
+            habits.length ?
+              habits.map((habit, index) => <HabitLabel name={habit.name} key={index}></HabitLabel>)
+             :
+            "No Habits yet. Come on!!"
+          }
         </div>
       </main>
 
