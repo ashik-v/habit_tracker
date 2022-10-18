@@ -17,9 +17,8 @@ export default function Home() {
                 body: JSON.stringify(query),
             })
             .then(response => response.json())
-            .then(response => setHabits(
-                response.data.habits
-            ))
+            .then(response => setHabits(response.data.habits))
+            .catch(() => setHabits([{ name: "Habits could not be fetched. Please try again later"}]))
     }, [])
 
   return (
