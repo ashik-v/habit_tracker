@@ -8,17 +8,22 @@ function HabitLabel({ name }) {
 export default function Home() {
     const [habits, setHabits] = useState([{ name: 'loading...' }])
     useEffect(() => {
-        const query = { query: `{ habits { name } }` }
-        fetch(
-            "http://localhost:3002/graphql",
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(query),
-            })
-            .then(response => response.json())
-            .then(response => setHabits(response.data.habits))
-            .catch(() => setHabits([{ name: "Habits could not be fetched. Please try again later"}]))
+        const fetchHabits = async () => {
+            const query = { query: `{ habits { name } }` }
+            const response = await fetch(
+                "http://localhost:3002/graphql",
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(query),
+                })
+            const habitResponse = await response.json()
+            const habitArray = habitResponse.data.habits
+            setHabits(habitArray)
+        }
+
+        fetchHabits()
+            .catch((error) => setHabits([{ name: `Habits could not be fetched because ${error}. Please try again later`}]))
     }, [])
 
   return (
