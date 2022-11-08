@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
+import HabitTrackerClient from "../lib/habitTrackerClient";
 
 function HabitLabel({ name }) {
   return <div>{name}</div>
@@ -9,16 +10,8 @@ export default function Home() {
     const [habits, setHabits] = useState([{ name: 'loading...' }])
     useEffect(() => {
         const fetchHabits = async () => {
-            const query = { query: `{ habits { name } }` }
-            const response = await fetch(
-                "http://localhost:3002/graphql",
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(query),
-                })
-            const habitResponse = await response.json()
-            const habitArray = habitResponse.data.habits
+            const client = new HabitTrackerClient
+            const habitArray = await client.fetchHabits()
             setHabits(habitArray)
         }
 
