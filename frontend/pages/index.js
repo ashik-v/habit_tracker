@@ -1,36 +1,57 @@
-import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import HabitTrackerClient from "../lib/habitTrackerClient";
-import { NDSProvider } from "@nulogy/components";
+import { NDSProvider, Table } from "@nulogy/components";
 
-function HabitLabel({ name }) {
-  return <div>{name}</div>
+function HabitsTable({ columns, rows }) {
+  return (
+    <Table
+      columns={
+        [
+          { label: "Habit", dataKey: "habit" },
+          {
+            label: "Dec 6, 2022",
+            dataKey: "12-06-2022"
+          },
+          {
+            label: "Dec 7, 2022",
+            dataKey: "12-07-2022"
+          }
+        ]
+      }
+      rows={rows}
+      stickyHeader={false}
+    />
+  )
 }
 
 export default function Home() {
-    const [habits, setHabits] = useState([{ name: 'loading...' }])
-    useEffect(() => {
-        const fetchHabits = async () => {
-            const client = new HabitTrackerClient
-            const habitArray = await client.fetchHabits()
-            setHabits(habitArray)
-        }
+  const [habits, setHabits] = useState([{ name: 'loading...' }])
+  useEffect(() => {
+      const fetchHabits = async () => {
+          const client = new HabitTrackerClient
+          const habitArray = await client.fetchHabits()
+          setHabits(habitArray)
+      }
 
-        fetchHabits()
-            .catch((error) => setHabits([{ name: `Habits could not be fetched because ${error}. Please try again later`}]))
-    }, [])
+      fetchHabits()
+          .catch((error) => setHabits([{ name: `Habits could not be fetched because ${error}. Please try again later`}]))
+  }, [])
+
+  const mapHabits = () => {
+    return habits.map((habit, index) => ({ habit: habit.name, id: index }))
+  }
 
   return (
     <NDSProvider>
       <div className="container">
         <main>
-          <h1 className="title">
-            Welcome to Habit Tracker!
-          </h1>
           <div>
             {
               habits.length ?
-                habits.map((habit, index) => <HabitLabel name={habit.name} key={index}></HabitLabel>)
+                <HabitsTable
+                  columns={[]}
+                  rows={mapHabits()}
+                />
                :
               "No Habits yet. Come on!!"
             }
