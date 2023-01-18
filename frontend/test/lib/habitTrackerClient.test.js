@@ -7,13 +7,13 @@ enableFetchMocks()
 
 describe('fetchHabits', () => {
   it('returns a list of habits', async () => {
-    const mockedResponse = { "data": { "habits": [{ "name": "RUN" }, { "name": "Sleep early" }] }}
+    const mockedResponse = { "data": { "habits": [{ "name": "RUN", "id": "1", "trackedDates": [] }, { "name": "Sleep early", id: "2", "trackedDates": ["2022-07-26", "2022-07-27"] }] }}
     fetch.mockResponseOnce(JSON.stringify(mockedResponse))
     const client = new HabitTrackerClient
 
     const habits = await client.fetchHabits()
 
-    expect(habits).toEqual([{ name: "RUN"}, { name: "Sleep early" }])
+    expect(habits).toEqual([{ id: "1", name: "RUN", "trackedDates": []}, { name: "Sleep early", id: "2", trackedDates: ["2022-07-26", "2022-07-27"] }])
   });
 });
 

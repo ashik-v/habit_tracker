@@ -2,7 +2,7 @@ class HabitTrackerClient {
   constructor() {}
 
   async fetchHabits() {
-    const query = { query: `{ habits { name } }` }
+    const query = { query: `{ habits { id name trackedDates } }` }
     const response = await fetch(
       "http://localhost:3002/graphql",
       {

@@ -1,23 +1,24 @@
 import { useEffect, useState } from 'react'
 import HabitTrackerClient from "../lib/habitTrackerClient";
 import { NDSProvider, Table } from "@nulogy/components";
+import { DateTime } from "luxon"
 
-function HabitsTable({ columns, rows }) {
+const generateColumnHeaders = () => {
+  let result = [{ label: "Habit", dataKey: "habit" }]
+  for (let i = -3; i <= 3; i++ ) {
+    const date = DateTime.now().plus({days: i}).endOf('day');
+    result.push({ label: date.toLocaleString(DateTime.DATE_MED), dataKey: date.toISODate() });
+  }
+
+  return result
+}
+
+function HabitsTable({ rows }) {
+  const columns = generateColumnHeaders();
+
   return (
     <Table
-      columns={
-        [
-          { label: "Habit", dataKey: "habit" },
-          {
-            label: "Dec 6, 2022",
-            dataKey: "12-06-2022"
-          },
-          {
-            label: "Dec 7, 2022",
-            dataKey: "12-07-2022"
-          }
-        ]
-      }
+      columns={columns}
       rows={rows}
       stickyHeader={false}
     />
@@ -25,7 +26,7 @@ function HabitsTable({ columns, rows }) {
 }
 
 export default function Home() {
-  const [habits, setHabits] = useState([{ name: 'loading...' }])
+  const [habits, setHabits] = useState([{ name: 'loading...', key: 1 }])
   useEffect(() => {
       const fetchHabits = async () => {
           const client = new HabitTrackerClient
@@ -38,7 +39,17 @@ export default function Home() {
   }, [])
 
   const mapHabits = () => {
-    return habits.map((habit, index) => ({ habit: habit.name, id: index }))
+    if (habits[0].name === 'loading...') return habits
+
+    return habits.map((habit) => {
+      const result = { habit: habit.name, key: habit.id }
+
+      habit.trackedDates.map((trackedDate) => {
+        result[trackedDate] = "✅"
+      })
+
+      return result
+    })
   }
 
   return (
