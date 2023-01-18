@@ -26,7 +26,7 @@ function HabitsTable({ rows }) {
 }
 
 export default function Home() {
-  const [habits, setHabits] = useState([{ name: 'loading...', key: 1 }])
+  const [habits, setHabits] = useState([{ name: 'loading...', id: 1 }])
   useEffect(() => {
       const fetchHabits = async () => {
           const client = new HabitTrackerClient
@@ -42,7 +42,7 @@ export default function Home() {
     if (habits[0].name === 'loading...') return habits
 
     return habits.map((habit) => {
-      const result = { habit: habit.name, key: habit.id }
+      const result = { habit: habit.name, id: habit.id }
 
       habit.trackedDates.map((trackedDate) => {
         result[trackedDate] = "✅"
