@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import HabitTrackerClient from "../lib/habitTrackerClient";
-import { NDSProvider, Table } from "@nulogy/components";
+import { Checkbox, NDSProvider, Table } from "@nulogy/components";
 import { DateTime } from "luxon"
 
 const generateColumnHeaders = () => {
   let result = [{ label: "Habit", dataKey: "habit" }]
   for (let i = -3; i <= 3; i++ ) {
     const date = DateTime.now().plus({days: i}).endOf('day');
-    result.push({ label: date.toLocaleString(DateTime.DATE_MED), dataKey: date.toISODate() });
+    result.push({ label: date.toLocaleString(DateTime.DATE_MED), dataKey: date.toISODate(), align: "center" });
   }
 
   return result
@@ -41,12 +41,19 @@ export default function Home() {
   const mapHabits = () => {
     if (habits[0].name === 'loading...') return habits
 
+    const dates = generateColumnHeaders().map((dateObject) => dateObject["dataKey"]).slice(1);
+
     return habits.map((habit) => {
       const result = { habit: habit.name, id: habit.id }
 
-      habit.trackedDates.map((trackedDate) => {
-        result[trackedDate] = "✅"
-      })
+      dates.map((date) => {
+        let checked = false
+        if (habit.trackedDates.indexOf(date) !== -1) {
+          checked = true
+        }
+
+        result[date] = <Checkbox checked={checked} />
+      });
 
       return result
     })
