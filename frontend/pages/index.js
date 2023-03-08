@@ -38,6 +38,13 @@ export default function Home() {
           .catch((error) => setHabits([{ name: `Habits could not be fetched because ${error}. Please try again later`}]))
   }, [])
 
+  const toggleHabit = (event) => {
+
+    if(event.target.checked === true) {
+
+    }
+  }
+
   const mapHabits = () => {
     if (habits[0].name === 'loading...') return habits
 
@@ -52,7 +59,7 @@ export default function Home() {
           checked = true
         }
 
-        result[date] = <Checkbox checked={checked} />
+        result[date] = <Checkbox defaultValue={checked} onChange={toggleHabit} />
       });
 
       return result

@@ -16,4 +16,15 @@ describe('fetchHabits', () => {
     expect(habits).toEqual([{ id: "1", name: "RUN", "trackedDates": []}, { name: "Sleep early", id: "2", trackedDates: ["2022-07-26", "2022-07-27"] }])
   });
 });
-
+``
+describe('trackHabit', () => {
+  it('tracks a habit for a given date', async () => {
+    const mockedResponse = { "data": { "habit": { "name": "Sleep early", id: "2", "trackedDates": ["2022-07-26", "2022-07-27"] }}}
+    fetch.mockedResponseOnce(JSON.stringify(mockedResponse))
+    const client = new HabitTrackerClient
+    
+    const result = await client.trackHabit(2, "2022-07-27")
+    
+    expect(result).toEqual(true)
+  });
+});
