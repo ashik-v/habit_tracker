@@ -14,6 +14,39 @@ class HabitTrackerClient {
 
     return habitResponse.data.habits
   }
+
+  async trackHabit(habitId, date) {
+    const mutation = {
+      mutation: `
+      {
+        trackDate(
+          input: {
+            habitId: ${habitId}
+            date: "${date}"
+          }
+        ) {
+          habit {
+            name
+            trackedDates
+          }
+        }
+      }
+    ` }
+
+    const response = await fetch("http://localhost:3002/graphql",
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(mutation),
+      }
+    )
+
+    const habitResponse = await response.json()
+
+    if (habitResponse.data.habit) {
+      return true
+    }
+  }
 }
 
 export default HabitTrackerClient;
