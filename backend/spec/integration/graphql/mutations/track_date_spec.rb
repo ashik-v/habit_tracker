@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Mutations::TrackDate, type: :request do
-  it "works " do
+  it "works" do
     habit = Habit.create(name: "habit")
     gql = <<~GRAPHQL
       mutation {
