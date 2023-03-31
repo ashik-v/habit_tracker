@@ -2,7 +2,7 @@ class HabitTrackerClient {
   constructor() {}
 
   async fetchHabits() {
-    const query = { query: `{ habits { id name trackedDates } }` }
+    const query = { query: `query habits { habits { id name trackedDates } }` }
     const response = await fetch(
       "http://localhost:3002/graphql",
       {
@@ -16,22 +16,7 @@ class HabitTrackerClient {
   }
 
   async trackHabit(habitId, date) {
-    const mutation = {
-      mutation: `
-      {
-        trackDate(
-          input: {
-            habitId: ${habitId}
-            date: "${date}"
-          }
-        ) {
-          habit {
-            name
-            trackedDates
-          }
-        }
-      }
-    ` }
+    const mutation = { query: `mutation trackDate { trackDate(input: { habitId: ${habitId} date: "${date}" }) { habit { name trackedDates } } }` }
 
     const response = await fetch("http://localhost:3002/graphql",
       {
@@ -50,8 +35,8 @@ class HabitTrackerClient {
 
   async untrackHabit(habitId, date) {
     const mutation = {
-      mutation: `
-      {
+      query: `
+      mutation untrackDate {
         untrackDate(
           input: {
             habitId: ${habitId}

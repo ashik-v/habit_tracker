@@ -25,18 +25,39 @@ function HabitsTable({ rows }) {
   )
 }
 
+function HabitTrackerCheckBox({ defaultValue, habitId, date, onChange }) {
+  const handleChange = (event) => {
+    onChange(event.target.checked, habitId, date)
+  }
+
+  return (
+    <Checkbox defaultValue={defaultValue} onChange={handleChange} />
+  )
+}
+
 export default function Home() {
   const [habits, setHabits] = useState([{ name: 'loading...', id: 1 }])
   useEffect(() => {
-      const fetchHabits = async () => {
-          const client = new HabitTrackerClient
-          const habitArray = await client.fetchHabits()
-          setHabits(habitArray)
-      }
+    const fetchHabits = async () => {
+      const client = new HabitTrackerClient
+      const habitArray = await client.fetchHabits()
+      setHabits(habitArray)
+    }
 
-      fetchHabits()
-          .catch((error) => setHabits([{ name: `Habits could not be fetched because ${error}. Please try again later`}]))
+    fetchHabits()
+      .catch((error) => setHabits([{ name: `Habits could not be fetched because ${error}. Please try again later`}]))
   }, [])
+
+  const toggleHabit = (beingChecked, habitId, date) => {
+    if(beingChecked) {
+      const client = new HabitTrackerClient()
+      client.trackHabit(habitId, date)
+    }
+    else {
+      const client = new HabitTrackerClient()
+      client.untrackHabit(habitId, date)
+    }
+  }
 
   const mapHabits = () => {
     if (habits[0].name === 'loading...') return habits
@@ -52,7 +73,7 @@ export default function Home() {
           checked = true
         }
 
-        result[date] = <Checkbox checked={checked} />
+        result[date] = <HabitTrackerCheckBox defaultValue={checked} onChange={toggleHabit} habitId={habit.id} date={date} />
       });
 
       return result
@@ -70,8 +91,8 @@ export default function Home() {
                   columns={[]}
                   rows={mapHabits()}
                 />
-               :
-              "No Habits yet. Come on!!"
+                :
+                "No Habits yet. Come on!!"
             }
           </div>
         </main>
