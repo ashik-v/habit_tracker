@@ -25,13 +25,13 @@ function HabitsTable({ rows }) {
   )
 }
 
-function HabitTrackerCheckBox({ defaultValue, habitId, date, onChange }) {
+function HabitTrackerCheckBox({ defaultChecked, habitId, date, onChange }) {
   const handleChange = (event) => {
     onChange(event.target.checked, habitId, date)
   }
 
   return (
-    <Checkbox defaultValue={defaultValue} onChange={handleChange} />
+    <Checkbox defaultChecked={defaultChecked} onChange={handleChange} />
   )
 }
 
@@ -73,7 +73,7 @@ export default function Home() {
           checked = true
         }
 
-        result[date] = <HabitTrackerCheckBox defaultValue={checked} onChange={toggleHabit} habitId={habit.id} date={date} />
+        result[date] = <HabitTrackerCheckBox defaultChecked={checked} onChange={toggleHabit} habitId={habit.id} date={date} />
       });
 
       return result
