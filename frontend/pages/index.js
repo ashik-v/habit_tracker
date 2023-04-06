@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import HabitTrackerClient from "../lib/habitTrackerClient";
-import { Checkbox, NDSProvider, Table } from "@nulogy/components";
+import { Button, Checkbox, Flex, NDSProvider, Table, theme } from "@nulogy/components";
 import { DateTime } from "luxon"
 
 const generateColumnHeaders = () => {
@@ -17,11 +17,17 @@ function HabitsTable({ rows }) {
   const columns = generateColumnHeaders();
 
   return (
-    <Table
-      columns={columns}
-      rows={rows}
-      stickyHeader={false}
-    />
+    <>
+      <div style={{display: "flex", justifyContent: "flex-end", gap: theme.sizes.x1}} >
+        <Button icon="leftArrow" />
+        <Button icon="rightArrow" />
+      </div>
+      <Table
+        columns={columns}
+        rows={rows}
+        stickyHeader={false}
+      />
+    </>
   )
 }
 
