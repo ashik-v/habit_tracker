@@ -3,22 +3,22 @@ import HabitTrackerClient from "../lib/habitTrackerClient";
 import { Button, Checkbox, NDSProvider, Table, theme } from "@nulogy/components";
 import { DateTime } from "luxon"
 
-const generateColumnHeaders = () => {
+const generateColumnHeaders = (referenceDate) => {
   let result = [{ label: "Habit", dataKey: "habit" }]
   for (let i = -3; i <= 3; i++ ) {
-    const date = DateTime.now().plus({days: i}).endOf('day');
+    const date = referenceDate.plus({days: i}).endOf('day');
     result.push({ label: date.toLocaleString(DateTime.DATE_MED), dataKey: date.toISODate(), align: "center" });
   }
 
   return result
 }
 
-function HabitsTable({ rows, columns }) {
+function HabitsTable({ rows, columns, previousWeekHandler, nextWeekHandler }) {
   return (
     <>
       <div style={{display: "flex", justifyContent: "flex-end", gap: theme.sizes.x1}} >
-        <Button icon="leftArrow" />
-        <Button icon="rightArrow" />
+        <Button icon="leftArrow" onClick={previousWeekHandler}/>
+        <Button icon="rightArrow" onClick={nextWeekHandler}/>
       </div>
       <Table
         columns={columns}
@@ -41,6 +41,16 @@ function HabitTrackerCheckBox({ defaultChecked, habitId, date, onChange }) {
 
 export default function Home() {
   const [habits, setHabits] = useState([{ name: 'loading...', id: 1 }])
+  const [referenceDate, setReferenceDate] = useState(DateTime.now());
+
+  const previousWeek = () => {
+    setReferenceDate(referenceDate.minus({ days: 7 }))
+  }
+
+  const nextWeek = () => {
+    setReferenceDate(referenceDate.plus({ days: 7 }))
+  }
+
   useEffect(() => {
     const fetchHabits = async () => {
       const client = new HabitTrackerClient
@@ -66,7 +76,7 @@ export default function Home() {
   const mapHabits = () => {
     if (habits[0].name === 'loading...') return habits
 
-    const dates = generateColumnHeaders().map((dateObject) => dateObject["dataKey"]).slice(1);
+    const dates = generateColumnHeaders(referenceDate).map((dateObject) => dateObject["dataKey"]).slice(1);
 
     return habits.map((habit) => {
       const result = { habit: habit.name, id: habit.id }
@@ -92,8 +102,10 @@ export default function Home() {
             {
               habits.length ?
                 <HabitsTable
-                  columns={generateColumnHeaders()}
+                  columns={generateColumnHeaders(referenceDate)}
                   rows={mapHabits()}
+                  previousWeekHandler={previousWeek}
+                  nextWeekHandler={nextWeek}
                 />
                 :
                 "No Habits yet. Come on!!"
