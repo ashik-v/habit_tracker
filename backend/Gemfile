@@ -17,7 +17,8 @@ gem 'rack-cors'
 # Graphql
 gem "graphql"
 
-gem "strong_migrations"
+# strong_migrations does not support SQLite. Add back when we move to Postgres
+# gem "strong_migrations"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
