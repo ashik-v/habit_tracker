@@ -8,6 +8,7 @@ module Mutations
     def resolve(habit_id:, date:)
       habit = Habit.find(habit_id)
       habit.tracked_dates << date
+      habit.deprecated_tracked_dates << date
       habit.save!
 
       {

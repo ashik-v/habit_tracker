@@ -9,7 +9,7 @@ module Mutations
       habit = Habit.find(habit_id)
       tracked_dates = habit.tracked_dates
       tracked_dates.delete(date)
-      habit.update!(tracked_dates: tracked_dates)
+      habit.update!(tracked_dates: tracked_dates, deprecated_tracked_dates: tracked_dates)
 
       {
         habit: habit

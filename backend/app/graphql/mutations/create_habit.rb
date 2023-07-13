@@ -6,8 +6,8 @@ module Mutations
 
     field :habit, Types::HabitType
 
-    def resolve(args)
-      { habit: Habit.create(args) }
+    def resolve(name:, tracked_dates:)
+      { habit: Habit.create(name: name, tracked_dates: tracked_dates, deprecated_tracked_dates: tracked_dates) }
     end
   end
 end
