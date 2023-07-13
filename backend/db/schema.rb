@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_18_131355) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_13_134708) do
   create_table "habits", force: :cascade do |t|
     t.string "name"
     t.text "tracked_dates"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "deprecated_tracked_dates"
   end
 
   create_table "users", force: :cascade do |t|
