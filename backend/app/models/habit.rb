@@ -4,7 +4,7 @@ class Habit < ApplicationRecord
   validate :tracked_dates_type, :tracked_dates_uniqueness
   validate :deprecated_tracked_dates_type, :deprecated_tracked_dates_uniqueness
   validates :name, presence: true
-  scope :by_date, ->(date) { Habit.all.select{ |habit| habit.tracked_dates.include?(date) } }
+  scope :by_date, ->(date) { Habit.all.select{ |habit| habit.deprecated_tracked_dates.include?(date) } }
 
   ## This implements the scope as a class method; commented for posterity
   # def self.by_date(date)
